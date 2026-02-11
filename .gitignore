@@ -1,0 +1,14 @@
+# Ignore all node_modules everywhere
+**/node_modules/
+
+# Ignore env files
+**/.env
+
+# Ignore uploads folder
+backend/uploads/
+
+# Ignore build files
+**/dist/
+
+# Logs
+npm-debug.log*
