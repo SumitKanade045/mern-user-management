@@ -28,7 +28,8 @@ const EditUser = ({ mode }) => {
 
   const handleUpdateUser = async (data) => {
     try {
-      await API.put(`/${id}`, data);
+      const response = await API.put(`/${id}`, data);
+      setUser(response.data);
       toast.success("Member updated successfully!");
       navigate("/");
     } catch (error) {

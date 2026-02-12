@@ -1,17 +1,18 @@
 import { Container, Typography, Box } from "@mui/material";
 import UserForm from "../components/UserForm";
 import API from "../api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AddUser = ({ mode }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleAddUser = async (data) => {
     try {
       await API.post("/", data);
       toast.success("Member added successfully!");
-      navigate("/");
+      navigate(`/${location.search || ""}`, { replace: true });
     } catch (error) {
       // Error handled by interceptor
     }

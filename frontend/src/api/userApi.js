@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/users",
+  baseURL: "https://mern-user-management-backend-387c.onrender.com/api/users",
 });
 
 API.interceptors.response.use(

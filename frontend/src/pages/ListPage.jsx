@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { 
   Container, 
   Typography, 
@@ -25,6 +26,7 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 const ListPage = ({ mode }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDeletingId, setIsDeletingId] = useState(null);
@@ -51,11 +53,43 @@ const ListPage = ({ mode }) => {
     } finally {
       setLoading(false);
     }
-  }, [page, search, gender, status, sort]);
+  }, [page, limit, search, gender, status, sort]);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
+
+  useEffect(() => {
+    const qp = {
+      page: searchParams.get("page"),
+      limit: searchParams.get("limit"),
+      search: searchParams.get("search"),
+      gender: searchParams.get("gender"),
+      status: searchParams.get("status"),
+      sort: searchParams.get("sort"),
+    };
+    setPage(qp.page ? Number(qp.page) : 1);
+    setLimit(qp.limit ? Number(qp.limit) : 5);
+    setSearch(qp.search || "");
+    setGender(qp.gender || "All");
+    setStatus(qp.status || "All");
+    setSort(qp.sort || "new");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setSearchParams(
+      {
+        page: String(page),
+        limit: String(limit),
+        search,
+        gender,
+        status,
+        sort,
+      },
+      { replace: true }
+    );
+  }, [page, limit, search, gender, status, sort, setSearchParams]);
 
   const handleDeleteClick = (id) => {
     setUserToDelete(id);

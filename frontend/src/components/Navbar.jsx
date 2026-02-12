@@ -72,7 +72,7 @@ const Navbar = ({ mode, toggleColorMode }) => {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to="/"
+                to={`/${location.search || ""}`}
                 startIcon={<HomeIcon />}
                 sx={{ 
                   borderRadius: "12px",
@@ -88,7 +88,7 @@ const Navbar = ({ mode, toggleColorMode }) => {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to="/add"
+                to={`/add${location.search || ""}`}
                 startIcon={<AddIcon />}
                 sx={{ 
                   borderRadius: "12px",

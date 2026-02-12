@@ -22,6 +22,9 @@ const ViewUser = ({ mode }) => {
   const [loading, setLoading] = useState(true);
   const [imgError, setImgError] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const imagePath = user?.profilePhoto ?? user?.profileImage ?? null;
+  const normalizedPath = imagePath ? (imagePath.startsWith("/uploads/") ? imagePath : `/uploads/${imagePath}`) : null;
+  const imageUrl = normalizedPath ? `https://mern-user-management-backend-387c.onrender.com${normalizedPath}` : null;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -77,21 +80,48 @@ const ViewUser = ({ mode }) => {
           <Box sx={{ p: { xs: 3, md: 6 }, mt: -10 }}>
             <Grid container spacing={4} alignItems="flex-end">
               <Grid item>
-                {user?.profileImage && !imgError ? (
-                  <div className="view-avatar">
+                {imageUrl && !imgError ? (
+                  <Box
+                    sx={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      border: "2px solid",
+                      borderColor: mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                    }}
+                  >
                     <img
-                      className="profile-image"
-                      src={`http://localhost:5000${user.profileImage}`}
+                      src={imageUrl}
                       alt={`${user?.firstName || ""} ${user?.lastName || ""}`}
                       onError={() => setImgError(true)}
                       onClick={() => setLightboxOpen(true)}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
-                  </div>
+                  </Box>
                 ) : (
-                  <div className="profile-image-fallback">
+                  <Box
+                    sx={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      border: "2px solid",
+                      borderColor: mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      bgcolor: mode === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)",
+                      color: mode === "dark" ? "#f1f5f9" : "#0f172a",
+                      fontWeight: 800,
+                      fontSize: "2rem",
+                    }}
+                  >
                     {(user?.firstName?.[0] || "").toUpperCase()}
                     {(user?.lastName?.[0] || "").toUpperCase()}
-                  </div>
+                  </Box>
                 )}
               </Grid>
               <Grid item xs>
@@ -146,8 +176,8 @@ const ViewUser = ({ mode }) => {
         open={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
         images={
-          user?.profileImage
-            ? [{ src: `http://localhost:5000${user.profileImage}`, alt: `${user?.firstName || ""} ${user?.lastName || ""}` }]
+          imageUrl
+            ? [{ src: imageUrl, alt: `${user?.firstName || ""} ${user?.lastName || ""}` }]
             : []
         }
       />
