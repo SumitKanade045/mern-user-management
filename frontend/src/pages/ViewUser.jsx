@@ -24,7 +24,9 @@ const ViewUser = ({ mode }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const imagePath = user?.profilePhoto ?? user?.profileImage ?? null;
   const normalizedPath = imagePath ? (imagePath.startsWith("/uploads/") ? imagePath : `/uploads/${imagePath}`) : null;
-  const imageUrl = normalizedPath ? `https://mern-user-management-backend-387c.onrender.com${normalizedPath}` : null;
+  const imageUrl = normalizedPath
+    ? `https://mern-user-management-backend-387c.onrender.com${normalizedPath}?t=${user?.updatedAt ? new Date(user.updatedAt).getTime() : Date.now()}`
+    : null;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -97,7 +99,7 @@ const ViewUser = ({ mode }) => {
                       alt={`${user?.firstName || ""} ${user?.lastName || ""}`}
                       onError={() => setImgError(true)}
                       onClick={() => setLightboxOpen(true)}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{ width: "120px", height: "120px", objectFit: "cover", borderRadius: "50%" }}
                     />
                   </Box>
                 ) : (
